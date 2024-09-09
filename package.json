@@ -1,9 +1,10 @@
 {
   "name": "code-fu-readme-badge",
   "version": "1.0.1",
-  "main": "index.js",
+  "main": "api/index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "NODE_ENV=production node api/index.js",
+    "dev": "nodemon"
   },
   "keywords": [
     "readme",
@@ -14,5 +15,8 @@
   "author": "David Gabriel Álvarez Delgadillo",
   "dependencies": {
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
