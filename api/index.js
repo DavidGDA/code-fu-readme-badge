@@ -10,6 +10,10 @@ app.get("/badges/default-badge", (req, res) => {
   res.redirect("/badges/default-badge.svg");
 });
 
+app.get("/badges/cruiz", (req, res) => {
+  res.redirect("/badges/cruiz.svg");
+});
+
 app.get("/badges/dalvarez", (req, res) => {
   res.redirect("/badges/dalvarez.svg");
 });
