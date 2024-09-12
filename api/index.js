@@ -22,6 +22,18 @@ app.get("/badges/jsolis", (req, res) => {
   res.redirect("/badges/jsolis.svg");
 });
 
+app.get("/badges/ralfaro", (req, res) => {
+  res.redirect("/badges/ralfaro.svg");
+});
+
+app.get("/badges/afonseca", (req, res) => {
+  res.redirect("/badges/afonseca.svg");
+});
+
+app.get("/badges/arodriguez", (req, res) => {
+  res.redirect("/badges/arodriguez.svg");
+});
+
 app.listen(port, () => {
     console.log(`Server is running on the port ${port}`);
 })
