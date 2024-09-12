@@ -6,8 +6,20 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "../public")));
 
-app.get("/", (req, res) => {
-    res.redirect("/badges/badge.svg");
+app.get("/badges/default-badge", (req, res) => {
+  res.redirect("/badges/default-badge.svg");
+});
+
+app.get("/badges/dalvarez", (req, res) => {
+  res.redirect("/badges/dalvarez.svg");
+});
+
+app.get("/badges/areynosa", (req, res) => {
+  res.redirect("/badges/areynosa.svg");
+});
+
+app.get("/badges/jsolis", (req, res) => {
+  res.redirect("/badges/jsolis.svg");
 });
 
 app.listen(port, () => {
