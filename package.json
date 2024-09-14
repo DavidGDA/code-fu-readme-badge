@@ -1,6 +1,6 @@
 {
   "name": "code-fu-readme-badge",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "api/index.js",
   "scripts": {
     "start": "NODE_ENV=production node api/index.js",
