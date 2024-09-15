@@ -1,11 +1,5 @@
 {
   "version": 2,
   "builds": [{ "src": "api/index.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "api/index.js" }],
-  "functions": {
-    "util/getStaffData.js": {
-      "memory": 512,
-      "maxDuration": 10
-    }
-  }
+  "routes": [{ "src": "/(.*)", "dest": "api/index.js" }]
 }
