@@ -6,6 +6,8 @@ const staffName = "dalvarez";
 
 async function scrappData() {
   try {
+    console.log("chromium path: ", puppeteer.executablePath());
+    
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
