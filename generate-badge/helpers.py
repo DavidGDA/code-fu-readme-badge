@@ -1,4 +1,4 @@
-from PIL import ImageFont, ImageDraw, Image
+from PIL import ImageFont
 import requests
 import base64
 
