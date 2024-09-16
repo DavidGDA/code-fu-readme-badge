@@ -1,8 +1,19 @@
 import svgwrite
 from helpers import estimate_text_width, encode_image_from_url
 
-def generar_carnet_svg(persona):
+def generate_badge_svg(persona):
     # Configuraciones
+    """
+    Genera un SVG de una badge con la información
+    de un miembro.
+
+    Args:
+        persona (dict): Diccionario con información del miembro,
+            contiene las keys "codigo", "nombre", "cargo" e "imagen"
+
+    Returns:
+        None
+    """
     width = 220
     height = 110
     logo_url = "https://code-fu.net.ni/wp-content/uploads/2024/07/Code-FU-Landscape.svg"
