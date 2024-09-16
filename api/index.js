@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const getStaffData = require("../util/getStaffData");
+const scrappData = require("../util/getStaffData");
 const port = 3000;
 
 const app = express();
@@ -12,8 +12,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/badges/:staffName", async (req, res) => {
-  const staffName = req.params.staff
-  await getStaffData(staffName);
+  const staffName = req.params.staff;
+  await scrappData(staffName);
   res.sendFile(path.join(__dirname, "../data/images.json"));
 });
 
