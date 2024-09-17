@@ -48,11 +48,11 @@ app.get("/badges/:staffName", async (req, res) => {
 
     await browser.close();
 
-    await fs.writeFile("data/images.json", JSON.stringify(staffInfo, null, 2));
+    await fs.writeFile("api/images.json", JSON.stringify(staffInfo, null, 2));
   } catch (error) {
     console.error(error);
   }
-  res.sendFile(path.join(__dirname, "./data/images.json"));
+  res.sendFile(path.join(__dirname, "images.json"));
 });
 
 app.listen(port, () => {

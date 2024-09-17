@@ -1,4 +1,2 @@
 /node_modules
-
-# No hay que subir la carpeta data
-/data
+/.cache
