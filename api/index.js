@@ -1,6 +1,4 @@
 const express = require("express");
-const puppeteer = require("puppeteer");
-const fs = require("fs").promises;
 const path = require("path");
 const port = 3000;
 
