@@ -4,7 +4,6 @@
   "main": "api/index.js",
   "scripts": {
     "start": "npx puppeteer browsers install chrome && node api/index.js",
-    "vercel-install": "",
     "dev": "nodemon"
   },
   "keywords": [
