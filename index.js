@@ -1,6 +1,5 @@
 const express = require("express");
-const chromium = require("chrome-aws-lambda");
-const puppeteer = require("puppeteer-core");
+const puppeteer = require("puppeteer");
 const fs = require("fs").promises;
 const path = require("path");
 const port = 3000;
@@ -16,10 +15,8 @@ app.get("/", (req, res) => {
 app.get("/badges/:staffName", async (req, res) => {
   const staffName = req.params.staffName;
   try {
+    const url = "https://code-fu.net.ni/staff";
     const browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
       headless: true,
     });
     const page = await browser.newPage();
@@ -55,7 +52,7 @@ app.get("/badges/:staffName", async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-  res.sendFile(path.join(__dirname, "../data/images.json"));
+  res.sendFile(path.join(__dirname, "./data/images.json"));
 });
 
 app.listen(port, () => {
