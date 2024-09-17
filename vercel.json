@@ -1,13 +1,5 @@
 {
   "version": 2,
-  "routes": [{ "src": "/(.*)", "dest": "api/index.js" }],
-  "functions": {
-    "api/index.js": {
-      "runtime": "nodejs20.x",
-      "api/screenshot.js": {
-        "memory": 512,
-        "maxDuration": 10
-      }
-    }
-  }
+  "builds": [{ "src": "index.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "api/index.js" }]
 }

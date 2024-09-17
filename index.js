@@ -1,14 +1,27 @@
-const puppeteer = require("puppeteer");
+const express = require("express");
+const chromium = require("chrome-aws-lambda");
+const puppeteer = require("puppeteer-core");
 const fs = require("fs").promises;
+const path = require("path");
+const port = 3000;
 
-const url = "https://code-fu.net.ni/staff/";
-const staffName = "dalvarez";
+const app = express();
 
-async function scrappData() {
+app.use(express.static(path.join(__dirname, "../public")));
+
+app.get("/", (req, res) => {
+  res.send("CDN is on the way");
+});
+
+app.get("/badges/:staffName", async (req, res) => {
+  const staffName = req.params.staffName;
   try {
-    console.log("chromium path: ", puppeteer.executablePath());
-    
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: true,
+    });
     const page = await browser.newPage();
     await page.goto(url);
 
@@ -38,14 +51,13 @@ async function scrappData() {
 
     await browser.close();
 
-    await fs.writeFile(
-      "data/images.json",
-      JSON.stringify(staffInfo, null, 2)
-    );
+    await fs.writeFile("data/images.json", JSON.stringify(staffInfo, null, 2));
   } catch (error) {
     console.error(error);
   }
-}
+  res.sendFile(path.join(__dirname, "../data/images.json"));
+});
 
-// exportar la función para poder ser utilizada en otro archivo
-module.exports = scrappData;
+app.listen(port, () => {
+  console.log(`Server is running on the port ${port}`);
+});
