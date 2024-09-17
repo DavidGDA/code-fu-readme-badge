@@ -1,9 +1,9 @@
 {
   "name": "code-fu-readme-badge",
   "version": "1.0.3",
-  "main": "index.js",
+  "main": "api/index.js",
   "scripts": {
-    "start": "NODE_ENV=production node index.js",
+    "start": "NODE_ENV=production node api/index.js",
     "vercel-install": "npx puppeteer browsers install chrome",
     "dev": "nodemon"
   },
