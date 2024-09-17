@@ -4,6 +4,7 @@
   "main": "api/index.js",
   "scripts": {
     "start": "npx puppeteer browsers install chrome && node api/index.js",
+    "install-all": "npm i && npx puppeteer browsers install chrome",
     "dev": "nodemon"
   },
   "keywords": [
