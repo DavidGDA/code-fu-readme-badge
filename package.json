@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node index.js",
-    "build": "npx puppeteer browsers install chrome",
+    "vercel-install": "npx puppeteer browsers install chrome",
     "dev": "nodemon"
   },
   "keywords": [
