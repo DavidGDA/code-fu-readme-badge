@@ -3,8 +3,7 @@
   "version": "1.0.3",
   "main": "api/index.js",
   "scripts": {
-    "start": "npx puppeteer browsers install chrome && node api/index.js",
-    "install-all": "npm i && npx puppeteer browsers install chrome",
+    "start": "node api/index.js",
     "dev": "nodemon"
   },
   "keywords": [
@@ -15,8 +14,7 @@
   ],
   "author": "David Gabriel Álvarez Delgadillo",
   "dependencies": {
-    "express": "^4.21.0",
-    "puppeteer": "^23.3.1"
+    "express": "^4.21.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
