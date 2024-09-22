@@ -3,7 +3,6 @@ import os
 import json
 from helpers import estimate_text_width, encode_image_from_url
 
-
 def generate_badge_svg(persona):
     # Configuraciones
     """

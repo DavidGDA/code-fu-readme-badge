@@ -8,7 +8,6 @@ def estimate_text_width(text, font_path, font_size):
     text_width = font.getlength(text)
     return text_width
 
-
 def encode_image_from_url(image_url):
     headers = {
         "Accept-Encoding": "gzip, deflate, sdch",
