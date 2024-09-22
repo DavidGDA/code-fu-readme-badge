@@ -1,3 +1,8 @@
 /node_modules
 /.cache
 /api/*.json
+__pycache__/
+build/
+dist/
+.venv/
+data.json
