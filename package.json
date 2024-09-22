@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "main": "api/index.js",
   "scripts": {
-    "start": "NODE_ENV=production node api/index.js",
+    "start": "node api/index.js",
     "dev": "nodemon"
   },
   "keywords": [
@@ -14,7 +14,7 @@
   ],
   "author": "David Gabriel Álvarez Delgadillo",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.21.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
