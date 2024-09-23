@@ -18,7 +18,7 @@ def generate_badge_svg(persona):
     height = 110
     logo_url = "https://code-fu.net.ni/wp-content/uploads/2024/07/Code-FU-Landscape.svg"
     name_size = 13
-    cargo_size = 8
+    cargo_size = 9
     max_text_width = 110
     font = "font/Montserrat-Bold.ttf"
 
@@ -56,9 +56,15 @@ def generate_badge_svg(persona):
                      text_anchor="middle", dominant_baseline="middle"))
 
     # Añadir el cargo (40% area)
+    while (estimate_text_width(persona["cargo"], font, cargo_size) > max_text_width):
+        cargo_size -= 0.5
+        if (cargo_size <= 0):
+            raise Exception("Text is too large to fit")
+
+
     dwg.add(dwg.text(persona["cargo"], insert=(60, 41), font_size=f"{cargo_size:.2f}px", fill="black",
                      text_anchor="middle", dominant_baseline="middle"))
-
+    
     # Añadir badge (60% area)
     dwg.add(dwg.image(href=f"data:image/svg+xml;base64,{logo_base64}", insert=(15, 50), size=("90px", "60px")))
 
