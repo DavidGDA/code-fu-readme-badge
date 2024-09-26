@@ -81,6 +81,11 @@ def generate_badge_svg(persona):
         )
     )
 
+    while (estimate_text_width(persona["cargo"], font, cargo_size) > max_text_width):
+        cargo_size -= 0.5
+        if (cargo_size <= 0):
+            raise Exception("Text is too large to fit")
+
     # Añadir el cargo (40% area)
     dwg.add(
         dwg.text(
