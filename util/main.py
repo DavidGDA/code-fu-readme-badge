@@ -1,7 +1,7 @@
 import svgwrite
-import os
 import json
 from helpers import estimate_text_width, encode_image_from_url
+
 
 def generate_badge_svg(persona):
     # Configuraciones
@@ -22,16 +22,18 @@ def generate_badge_svg(persona):
     name_size = 13
     cargo_size = 8
     max_text_width = 110
-    font = "font/Montserrat-Bold.ttf"
+    font = "util/font/Montserrat-Bold.ttf"
 
     # Descargar y decodificar imágenes
     image_base64 = encode_image_from_url(persona["staffImageUrl"])
     logo_base64 = encode_image_from_url(logo_url)
 
     dwg = svgwrite.Drawing(
-        f"../public/badges/{persona['staffCode']}.svg",
+        f"public/badges/{persona['staffCode']}.svg",
         size=(f"{width}px", f"{height}px"),
     )
+
+    print(f"Generating badge for {persona['staffFullName']}")
 
     # Añadir fuente
     dwg.defs.add(
@@ -107,12 +109,10 @@ def generate_badge_svg(persona):
 
 if __name__ == "__main__":
     # Leer el archivo JSON
-    try:
-        persona = {}
-        data_path = os.path.join(os.path.dirname(), "../data.json")
-        with open(data_path, "r") as file:
-            persona = json.loads(file.read())
-        generate_badge_svg(persona)
-    except FileNotFoundError as e:
-        print(f"Error: {e}")
-        exit(1)
+    persona = {}
+    with open("data.json", "r", encoding="utf-8") as file:
+        personas = json.loads(file.read())
+        for persona in personas:
+            generate_badge_svg(persona)
+
+    print("Badges generated successfully")
