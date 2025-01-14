@@ -14,18 +14,6 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.get("/badges/:staffName", async (req, res) => {
-  const staffName = req.params.staffName;
-
-  let badgeURL = path.join(__dirname, "public/badges", `${staffName}.svg`);
-
-  if (fsSync.existsSync(badgeURL)) {
-    return res.sendFile(badgeURL);
-  }
-
-  return res.status(404).send("Badge not found");
-});
-
 app.get("/generate", async (req, res) => {
   const StaffSelectors = [
     "c-t",
@@ -43,13 +31,12 @@ app.get("/generate", async (req, res) => {
   const generateBagdeBinRoute = path.resolve("util", generateBagdeBinName);
 
   const browser = await puppeteer.launch();
-
   const page = await browser.newPage();
   await page.goto(url);
 
-  let staffData = [];
+  const staffData = [];
 
-  StaffSelectors.forEach(async (selector) => {
+  for (const selector of StaffSelectors) {
     try {
       const staffCode = await page.$$eval(`.${selector}`, (element) =>
         element.map((el) => el.id)
@@ -80,25 +67,28 @@ app.get("/generate", async (req, res) => {
         });
       });
     } catch (error) {
-      console.error(error);
+      console.error(`Error fetching data for selector ${selector}:`, error);
     }
-  });
+  }
+
+  await browser.close();
 
   await fs.writeFile("data.json", JSON.stringify(staffData, null, 2));
   let errorGenerating = false;
   const pythonVenvRoute = path.resolve(".venv", "Scripts", "activate");
-  exec(`${pythonVenvRoute} & python ${generateBagdeBinRoute}`, (err, stdout, stderr) => {
-    if (err) {
-      console.error(err);
-      errorGenerating = true;
+  exec(
+    `${pythonVenvRoute} & python ${generateBagdeBinRoute}`,
+    (err, stdout, stderr) => {
+      if (err) {
+        console.error(err);
+        errorGenerating = true;
+      }
     }
-  });
+  );
 
   if (errorGenerating) {
     return res.status(500).send("Error generating badges");
   }
-
-  await browser.close();
 
   return res.send("Badges generated");
 });
