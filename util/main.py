@@ -1,6 +1,7 @@
 import svgwrite
 import json
 from helpers import estimate_text_width, encode_image_from_url
+import os
 
 
 def generate_badge_svg(persona):
@@ -28,8 +29,13 @@ def generate_badge_svg(persona):
     image_base64 = encode_image_from_url(persona["staffImageUrl"])
     logo_base64 = encode_image_from_url(logo_url)
 
+    badges_path = "public/badges"
+
+    if not os.path.exists(badges_path):
+        os.makedirs(badges_path)
+
     dwg = svgwrite.Drawing(
-        f"public/badges/{persona['staffCode']}.svg",
+        f"{badges_path}/{persona['staffCode']}.svg",
         size=(f"{width}px", f"{height}px"),
     )
 
