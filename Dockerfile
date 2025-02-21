@@ -56,5 +56,3 @@ RUN .venv/bin/pip install -r requirements.txt
 RUN chmod +x /app/util/main.py
 
 EXPOSE 3000
-
-CMD ["npm", "run", "start"]
