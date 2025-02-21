@@ -15,3 +15,5 @@ services:
             - .git/
         - action: rebuild
           path: package.json
+    volumes:
+      - /app/public/badges
