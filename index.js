@@ -1,14 +1,13 @@
 const express = require("express");
 const puppeteer = require("puppeteer");
 const fs = require("fs").promises;
-const fsSync = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
-const port = 10000;
+const port = 3000;
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 app.get("/", (req, res) => {
   res.send("Hello World");
@@ -30,12 +29,14 @@ app.get("/generate", async (req, res) => {
   const generateBagdeBinName = "main.py";
   const generateBagdeBinRoute = path.resolve("util", generateBagdeBinName);
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox"],
+  });
   const page = await browser.newPage();
   await page.goto(url);
 
   const staffData = [];
-
+  
   for (const selector of StaffSelectors) {
     try {
       const staffCode = await page.$$eval(`.${selector}`, (element) =>
@@ -75,9 +76,10 @@ app.get("/generate", async (req, res) => {
 
   await fs.writeFile("data.json", JSON.stringify(staffData, null, 2));
   let errorGenerating = false;
-  const pythonVenvRoute = path.resolve(".venv", "Scripts", "activate");
+  const venvPythonPath = path.resolve(".venv", "bin", "python");
+
   exec(
-    `${pythonVenvRoute} & python ${generateBagdeBinRoute}`,
+    `${venvPythonPath} ${generateBagdeBinRoute}`,
     (err, stdout, stderr) => {
       if (err) {
         console.error(err);

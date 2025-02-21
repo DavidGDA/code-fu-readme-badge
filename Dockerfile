@@ -1,0 +1,58 @@
+FROM node:22.14.0
+
+WORKDIR /app
+
+COPY package.json /app/package.json
+COPY index.js /app/index.js
+COPY requirements.txt /app/requirements.txt
+
+ADD util /app/util
+ADD public/badges /app/public/badges
+
+RUN npm install
+RUN apt-get update && apt-get install -y python3 \
+    python3-pip \
+    python3-venv \
+    ca-certificates \
+    fonts-liberation \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libc6 \
+    libcairo2 \
+    libcups2 \
+    libdbus-1-3 \
+    libexpat1 \
+    libfontconfig1 \
+    libgbm1 \
+    libgcc1 \
+    libglib2.0-0 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libstdc++6 \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libxtst6 \
+    lsb-release \
+    wget \
+    xdg-utils
+
+RUN python3 -m venv .venv
+RUN .venv/bin/pip install --upgrade pip
+RUN .venv/bin/pip install -r requirements.txt
+RUN chmod +x /app/util/main.py
+
+EXPOSE 3000
