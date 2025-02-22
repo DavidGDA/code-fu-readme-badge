@@ -8,6 +8,7 @@ COPY requirements.txt /app/requirements.txt
 
 ADD util /app/util
 ADD public/badges /app/public/badges
+ADD puppeteer.config.js /app/puppeteer.config.js
 
 RUN npm install
 RUN apt-get update && apt-get install -y python3 \
