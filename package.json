@@ -1,9 +1,10 @@
 {
   "name": "code-fu-readme-badge",
   "version": "2.0.0",
-  "main": "index.js",
+  "main": "index.cjs",
+  "type": "commonjs",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.cjs",
     "dev": "nodemon"
   },
   "keywords": [

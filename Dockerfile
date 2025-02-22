@@ -8,7 +8,6 @@ COPY requirements.txt /app/requirements.txt
 COPY nodemon.json /app/nodemon.json
 
 ADD util /app/util
-ADD public/badges /app/public/badges
 ADD puppeteer.config.js /app/puppeteer.config.js
 
 RUN npm install

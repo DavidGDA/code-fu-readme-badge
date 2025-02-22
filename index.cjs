@@ -95,7 +95,11 @@ app.get("/generate", async (req, res) => {
   return res.send("Badges generated");
 });
 
-app.listen(port, () => {
+app.listen(port, async () => {
+  await fs.mkdir("public/badges", { recursive: true }, (err) => {
+    if (err) throw err;
+  });
+
   console.log(`Server is running on the port ${port}
     http://localhost:${port}
     http://localhost:${port}/generate`);
