@@ -2,8 +2,18 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
+    develop:
+      watch:
+        - action: sync
+          path: ./
+          target: /app/
+          ignore:
+            - node_modules/
+            - .git/
+        - action: rebuild
+          path: package.json
     volumes:
       - /app/public/badges
