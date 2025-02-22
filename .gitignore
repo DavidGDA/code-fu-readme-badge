@@ -8,3 +8,6 @@ node_modules/
 # Python venv directory
 .venv/
 .env/
+
+# Cache de instalacion de chromium
+.cache/

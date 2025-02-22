@@ -1,9 +1,10 @@
 {
   "name": "code-fu-readme-badge",
   "version": "2.0.0",
-  "main": "index.js",
+  "main": "index.cjs",
+  "type": "commonjs",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.cjs",
     "dev": "nodemon"
   },
   "keywords": [
@@ -14,7 +15,7 @@
   ],
   "author": "David Gabriel Álvarez Delgadillo",
   "dependencies": {
-    "express": "^4.21.0",
+    "express": "^4.21.2",
     "puppeteer": "^24.2.1"
   },
   "devDependencies": {
