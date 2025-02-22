@@ -5,15 +5,19 @@ WORKDIR /app
 COPY package.json /app/package.json
 COPY index.js /app/index.js
 COPY requirements.txt /app/requirements.txt
+COPY nodemon.json /app/nodemon.json
 
 ADD util /app/util
 ADD public/badges /app/public/badges
 ADD puppeteer.config.js /app/puppeteer.config.js
 
 RUN npm install
-RUN apt-get update && apt-get install -y python3 \
+RUN apt-get update && apt-get install -y \
+    # Instalacion de python3
+    python3 \
     python3-pip \
     python3-venv \
+    # Dependencias del navegador chromium de puppeteer
     ca-certificates \
     fonts-liberation \
     libasound2 \
@@ -56,4 +60,5 @@ RUN .venv/bin/pip install --upgrade pip
 RUN .venv/bin/pip install -r requirements.txt
 RUN chmod +x /app/util/main.py
 
+# En produccion, se debe usar el puerto de la variable de entorno PORT de heroku
 EXPOSE 3000
