@@ -3,12 +3,10 @@ FROM node:22.14.0
 WORKDIR /app
 
 COPY package.json /app/package.json
-COPY index.cjs /app/index.cjs
 COPY requirements.txt /app/requirements.txt
 COPY nodemon.json /app/nodemon.json
-
-ADD util /app/util
 ADD puppeteer.config.cjs /app/puppeteer.config.cjs
+ADD src /app/src
 
 RUN npm install
 RUN apt-get update && apt-get install -y \
