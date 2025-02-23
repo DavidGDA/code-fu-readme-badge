@@ -3,12 +3,11 @@ FROM node:22.14.0
 WORKDIR /app
 
 COPY package.json /app/package.json
-COPY index.cjs /app/index.cjs
 COPY requirements.txt /app/requirements.txt
 COPY nodemon.json /app/nodemon.json
 
-ADD util /app/util
 ADD puppeteer.config.cjs /app/puppeteer.config.cjs
+ADD src /app/src
 
 RUN npm install
 RUN apt-get update && apt-get install -y \
@@ -53,11 +52,13 @@ RUN apt-get update && apt-get install -y \
     lsb-release \
     wget \
     xdg-utils
-
 RUN python3 -m venv .venv
 RUN .venv/bin/pip install --upgrade pip
 RUN .venv/bin/pip install -r requirements.txt
-RUN chmod +x /app/util/main.py
+RUN chmod +x /app/src/libs/badges_generator.py
+RUN chmod +x src/index.cjs
 
 # En produccion, se debe usar el puerto de la variable de entorno PORT de heroku
 EXPOSE 3000
+
+CMD ["npm", "run", "start"]
