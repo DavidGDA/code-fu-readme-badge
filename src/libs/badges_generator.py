@@ -23,7 +23,7 @@ def generate_badge_svg(persona):
     name_size = 13
     cargo_size = 8
     max_text_width = 110
-    font = "./src/util/font/Montserrat-Bold.ttf"
+    font = "./src/libs/font/Montserrat-Bold.ttf"
 
     # Descargar y decodificar imágenes
     image_base64 = encode_image_from_url(persona["staffImageUrl"])

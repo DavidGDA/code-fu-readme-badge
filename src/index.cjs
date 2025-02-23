@@ -26,7 +26,7 @@ app.get("/generate", async (req, res) => {
   ];
 
   const url = "https://code-fu.net.ni/staff";
-  const generateBagdeBinName = "badges-generator.py";
+  const generateBagdeBinName = "badges_generator.py";
   const generateBagdeBinRoute = path.resolve(
     "src",
     "libs",
