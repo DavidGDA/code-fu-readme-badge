@@ -56,6 +56,7 @@ RUN python3 -m venv .venv
 RUN .venv/bin/pip install --upgrade pip
 RUN .venv/bin/pip install -r requirements.txt
 RUN chmod +x /app/src/libs/badges_generator.py
+RUN chmod +x src/index.cjs
 
 # En produccion, se debe usar el puerto de la variable de entorno PORT de heroku
 EXPOSE 3000
