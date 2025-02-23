@@ -4,7 +4,7 @@
   "main": "src/index.cjs",
   "type": "commonjs",
   "scripts": {
-    "start": "src/index.cjs",
+    "start": "node src/index.cjs",
     "dev": "nodemon"
   },
   "keywords": [
