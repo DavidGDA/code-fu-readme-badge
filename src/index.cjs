@@ -26,8 +26,12 @@ app.get("/generate", async (req, res) => {
   ];
 
   const url = "https://code-fu.net.ni/staff";
-  const generateBagdeBinName = "main.py";
-  const generateBagdeBinRoute = path.resolve("src", "util", generateBagdeBinName);
+  const generateBagdeBinName = "badges-generator.py";
+  const generateBagdeBinRoute = path.resolve(
+    "src",
+    "libs",
+    generateBagdeBinName
+  );
 
   const browser = await puppeteer.launch({
     args: ["--no-sandbox"],

@@ -1,6 +1,6 @@
 import svgwrite
 import json
-from helpers import estimate_text_width, encode_image_from_url
+from libs.badges_helpers import estimate_text_width, encode_image_from_url
 import os
 
 
