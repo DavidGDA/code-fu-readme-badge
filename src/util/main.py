@@ -23,7 +23,7 @@ def generate_badge_svg(persona):
     name_size = 13
     cargo_size = 8
     max_text_width = 110
-    font = "util/font/Montserrat-Bold.ttf"
+    font = "./src/util/font/Montserrat-Bold.ttf"
 
     # Descargar y decodificar imágenes
     image_base64 = encode_image_from_url(persona["staffImageUrl"])
@@ -116,7 +116,7 @@ def generate_badge_svg(persona):
 if __name__ == "__main__":
     # Leer el archivo JSON
     persona = {}
-    with open("data.json", "r", encoding="utf-8") as file:
+    with open("./src/data.json", "r", encoding="utf-8") as file:
         personas = json.loads(file.read())
         for persona in personas:
             generate_badge_svg(persona)

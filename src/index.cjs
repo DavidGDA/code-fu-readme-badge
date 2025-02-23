@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.get("/", (req, res) => {
   res.send("Hello World");
@@ -27,7 +27,7 @@ app.get("/generate", async (req, res) => {
 
   const url = "https://code-fu.net.ni/staff";
   const generateBagdeBinName = "main.py";
-  const generateBagdeBinRoute = path.resolve("util", generateBagdeBinName);
+  const generateBagdeBinRoute = path.resolve("src", "util", generateBagdeBinName);
 
   const browser = await puppeteer.launch({
     args: ["--no-sandbox"],
@@ -74,7 +74,7 @@ app.get("/generate", async (req, res) => {
 
   await browser.close();
 
-  await fs.writeFile("data.json", JSON.stringify(staffData, null, 2));
+  await fs.writeFile("./src/data.json", JSON.stringify(staffData, null, 2));
   let errorGenerating = false;
   const venvPythonPath = path.resolve(".venv", "bin", "python");
 
@@ -96,7 +96,7 @@ app.get("/generate", async (req, res) => {
 });
 
 app.listen(port, async () => {
-  await fs.mkdir("public/badges", { recursive: true }, (err) => {
+  await fs.mkdir("../public/badges", { recursive: true }, (err) => {
     if (err) throw err;
   });
 
