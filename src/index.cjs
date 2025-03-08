@@ -3,17 +3,25 @@ const puppeteer = require("puppeteer");
 const fs = require("fs").promises;
 const path = require("path");
 const { exec } = require("child_process");
+const { exit } = require("process");
+
+/** Variable de puerto de la aplicacion */
 const port = process.env.PORT || 3000;
 
+/** Instancia de la aplicacion */
 const app = express();
 
+/* Middleware para servir archivos estaticos */
 app.use(express.static(path.join(__dirname, "../public")));
 
+/* Ruta principal de la aplicacion */
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("App is running");
 });
 
-app.get("/generate", async (req, res) => {
+/** Funcion para generar los badges */
+const generateBadges = async () => {
+  /** Selectores de clase HTML de los diferentes tipos de staff en la pagina de staff */
   const StaffSelectors = [
     "c-t",
     "hea-t",
@@ -25,23 +33,33 @@ app.get("/generate", async (req, res) => {
     "ck-t",
   ];
 
+  /** URL de la pagina de staff */
   const url = "https://code-fu.net.ni/staff";
+
+  /** Nombre del binario de generacion de badges */
   const generateBagdeBinName = "badges_generator.py";
+
+  /** Ruta del binario de generacion de badges */
   const generateBagdeBinRoute = path.resolve(
     "src",
     "libs",
     generateBagdeBinName
   );
 
+  /** Instancia del navegador de puppeteer */
   const browser = await puppeteer.launch({
     args: ["--no-sandbox"],
   });
+
+  /* se navega a la pagina de staff */
   const page = await browser.newPage();
   await page.goto(url);
 
+  /** Variable para almacenar los datos de los staff */
   const staffData = [];
 
-  for (const selector of StaffSelectors) {
+  /* Se recorren los selectores de staff para obtener los datos de cada staff */
+  StaffSelectors.forEach(async (selector) => {
     try {
       const staffCode = await page.$$eval(`.${selector}`, (element) =>
         element.map((el) => el.id)
@@ -63,6 +81,7 @@ app.get("/generate", async (req, res) => {
         })
       );
 
+      /* Se copian los datos obtenidos de los selectores al arreglo de datos de staff */
       staffCode.forEach((code, index) => {
         staffData.push({
           staffCode: code,
@@ -72,46 +91,55 @@ app.get("/generate", async (req, res) => {
         });
       });
     } catch (error) {
-      console.error(`Error fetching data for selector ${selector}:`, error);
-    }
-  }
-
-  await browser.close();
-
-  await fs.writeFile("./src/data.json", JSON.stringify(staffData, null, 2));
-  let errorGenerating = false;
-  const venvPythonPath = path.resolve(".venv", "bin", "python");
-
-  exec(`${venvPythonPath} ${generateBagdeBinRoute}`, (err, stdout, stderr) => {
-    if (err) {
-      console.error(err);
-      errorGenerating = true;
+      /* En caso de error se imprime en consola y se retorna false */
+      console.error(error);
+      return false;
     }
   });
 
-  if (errorGenerating) {
+  await browser.close();
+
+  /* Se escribe el archivo data.json con los datos obtenidos */
+  await fs.writeFile("./src/data.json", JSON.stringify(staffData, null, 2));
+  /* let errorGenerating = false; */
+  /** Contiene la ruta de el entorno virtual de python */
+  const venvPythonPath = path.resolve(".venv", "bin", "python");
+
+  /* Se ejecuta el binario de generacion de badges */
+  exec(`${venvPythonPath} ${generateBagdeBinRoute}`, (err, stdout, stderr) => {
+    /* if (err) {
+      console.error(err);
+      errorGenerating = true;
+    } */
+  });
+
+  /* if (errorGenerating) {
     return res.status(500).send("Error generating badges");
-  }
+  } */
 
-  return res.send("Badges generated");
-});
+  /* Se retorna true en caso de exito */
+  return true;
+};
 
+/* Se inicia el servidor en el puerto especificado */
 app.listen(port, async () => {
+  /* Se crea el directorio de badges si no existe */
   await fs.mkdir("../public/badges", { recursive: true }, (err) => {
     if (err) throw err;
   });
 
-  const serverUrl =
-    process.env.SERVER_URL || `http://localhost:${port}/generate`;
+  /** Ejecuta el servicio de generacion de badges
+   * @type {boolean}
+   * @returns {boolean} Retorna true si se ejecuto correctamente, si no retorna false
+   */
+  const execGenerate = await generateBadges();
 
-  const fetching = await fetch(serverUrl, {
-    method: "GET",
-  });
+  /* En caso de error al generar las badges se imprime en consola y el servidor deja de ejecutarse */
+  if (!execGenerate) {
+    console.error("Error generating badges");
+    exit(1);
+  }
 
-  console.log(await fetching.text());
-
-  console.log(
-    `Server is running on the port ${port}\n` +
-      (process.env.SERVER_URL || `http://localhost:${port}/generate`)
-  );
+  console.log("Badges generated successfully");
+  console.log(`Server is running on the port ${port}`);
 });
