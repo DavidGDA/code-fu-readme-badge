@@ -19,7 +19,10 @@ app.get("/", (req, res) => {
   res.send("App is running");
 });
 
-/** Funcion para generar los badges */
+/** Funcion para generar los badges
+ * @type {boolean}
+ * @returns {boolean} Retorna true si se ejecuto correctamente, si no retorna false
+ */
 const generateBadges = async () => {
   try {
     /** Selectores de clase HTML de los diferentes tipos de staff en la pagina de staff */
@@ -132,10 +135,9 @@ app.listen(port, async () => {
     if (err) throw err;
   });
 
-  /** Ejecuta el servicio de generacion de badges
-   * @type {boolean}
-   * @returns {boolean} Retorna true si se ejecuto correctamente, si no retorna false
-   */
+  /** Ejecuta el servicio de generacion de badges 
+  * @type {boolean}
+  */
   const execGenerate = await generateBadges();
 
   /* En caso de error al generar las badges se imprime en consola y el servidor deja de ejecutarse */
