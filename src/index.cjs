@@ -40,7 +40,7 @@ app.get("/generate", async (req, res) => {
   await page.goto(url);
 
   const staffData = [];
-  
+
   for (const selector of StaffSelectors) {
     try {
       const staffCode = await page.$$eval(`.${selector}`, (element) =>
@@ -82,15 +82,12 @@ app.get("/generate", async (req, res) => {
   let errorGenerating = false;
   const venvPythonPath = path.resolve(".venv", "bin", "python");
 
-  exec(
-    `${venvPythonPath} ${generateBagdeBinRoute}`,
-    (err, stdout, stderr) => {
-      if (err) {
-        console.error(err);
-        errorGenerating = true;
-      }
+  exec(`${venvPythonPath} ${generateBagdeBinRoute}`, (err, stdout, stderr) => {
+    if (err) {
+      console.error(err);
+      errorGenerating = true;
     }
-  );
+  });
 
   if (errorGenerating) {
     return res.status(500).send("Error generating badges");
@@ -104,7 +101,17 @@ app.listen(port, async () => {
     if (err) throw err;
   });
 
-  console.log(`Server is running on the port ${port}
-    http://localhost:${port}
-    http://localhost:${port}/generate`);
+  const serverUrl =
+    process.env.SERVER_URL || `http://localhost:${port}/generate`;
+
+  const fetching = await fetch(serverUrl, {
+    method: "GET",
+  });
+
+  console.log(await fetching.text());
+
+  console.log(
+    `Server is running on the port ${port}\n` +
+      (process.env.SERVER_URL || `http://localhost:${port}/generate`)
+  );
 });
