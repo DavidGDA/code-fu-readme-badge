@@ -21,58 +21,58 @@ app.get("/", (req, res) => {
 
 /** Funcion para generar los badges */
 const generateBadges = async () => {
-  /** Selectores de clase HTML de los diferentes tipos de staff en la pagina de staff */
-  const StaffSelectors = [
-    "c-t",
-    "hea-t",
-    "sm-t",
-    "hta-t",
-    "ta-t",
-    "hca-t",
-    "wb-t",
-    "ck-t",
-  ];
+  try {
+    /** Selectores de clase HTML de los diferentes tipos de staff en la pagina de staff */
+    const StaffSelectors = [
+      "c-t",
+      "hea-t",
+      "sm-t",
+      "hta-t",
+      "ta-t",
+      "hca-t",
+      "wb-t",
+      "ck-t",
+    ];
 
-  /** URL de la pagina de staff */
-  const url = "https://code-fu.net.ni/staff";
+    /** URL de la pagina de staff */
+    const url = "https://code-fu.net.ni/staff";
 
-  /** Nombre del binario de generacion de badges */
-  const generateBagdeBinName = "badges_generator.py";
+    /** Nombre del binario de generacion de badges */
+    const generateBagdeBinName = "badges_generator.py";
 
-  /** Ruta del binario de generacion de badges */
-  const generateBagdeBinRoute = path.resolve(
-    "src",
-    "libs",
-    generateBagdeBinName
-  );
+    /** Ruta del binario de generacion de badges */
+    const generateBagdeBinRoute = path.resolve(
+      "src",
+      "libs",
+      generateBagdeBinName
+    );
 
-  /** Instancia del navegador de puppeteer */
-  const browser = await puppeteer.launch({
-    args: ["--no-sandbox"],
-  });
+    /** Instancia del navegador de puppeteer */
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox"],
+    });
 
-  /* se navega a la pagina de staff */
-  const page = await browser.newPage();
-  await page.goto(url);
+    /* se navega a la pagina de staff */
+    const page = await browser.newPage();
+    await page.goto(url);
 
-  /** Variable para almacenar los datos de los staff */
-  const staffData = [];
+    /** Variable para almacenar los datos de los staff */
+    const staffData = [];
 
-  /* Se recorren los selectores de staff para obtener los datos de cada staff */
-  StaffSelectors.forEach(async (selector) => {
-    try {
-      const staffCode = await page.$$eval(`.${selector}`, (element) =>
-        element.map((el) => el.id)
+    /* Se recorren los selectores de staff para obtener los datos de cada staff */
+    for (const selector of StaffSelectors) {
+      const staffCode = await page.$$eval(`.${selector}`, (elements) =>
+        elements.map((el) => el.id)
       );
-      const staffFullName = await page.$$eval(`.${selector} h2`, (element) =>
-        element.map((el) => el.textContent)
+      const staffFullName = await page.$$eval(`.${selector} h2`, (elements) =>
+        elements.map((el) => el.textContent)
       );
       const staffCargo = await page.$$eval(
         `.${selector} .info-staff span`,
-        (element) => element.map((el) => el.textContent)
+        (elements) => elements.map((el) => el.textContent)
       );
-      let staffImageUrl = await page.$$eval(`.${selector} img`, (element) =>
-        element.map((el) => {
+      let staffImageUrl = await page.$$eval(`.${selector} img`, (elements) =>
+        elements.map((el) => {
           let imageUrl = el.outerHTML.match(/src="([^"]*)/)[1];
           if (imageUrl.startsWith("data:image")) {
             imageUrl = el.outerHTML.match(/data-src="([^"]*)/)[1];
@@ -90,35 +90,39 @@ const generateBadges = async () => {
           staffImageUrl: staffImageUrl[index],
         });
       });
-    } catch (error) {
-      /* En caso de error se imprime en consola y se retorna false */
-      console.error(error);
-      return false;
     }
-  });
 
-  await browser.close();
+    await browser.close();
 
-  /* Se escribe el archivo data.json con los datos obtenidos */
-  await fs.writeFile("./src/data.json", JSON.stringify(staffData, null, 2));
-  /* let errorGenerating = false; */
-  /** Contiene la ruta de el entorno virtual de python */
-  const venvPythonPath = path.resolve(".venv", "bin", "python");
+    /* Se escribe el archivo data.json con los datos obtenidos */
+    await fs.writeFile("./src/data.json", JSON.stringify(staffData, null, 2));
+    /* let errorGenerating = false; */
+    /** Contiene la ruta de el entorno virtual de python */
+    const venvPythonPath = path.resolve(".venv", "bin", "python");
 
-  /* Se ejecuta el binario de generacion de badges */
-  exec(`${venvPythonPath} ${generateBagdeBinRoute}`, (err, stdout, stderr) => {
-    /* if (err) {
+    /* Se ejecuta el binario de generacion de badges */
+    exec(
+      `${venvPythonPath} ${generateBagdeBinRoute}`,
+      (err, stdout, stderr) => {
+        /* if (err) {
       console.error(err);
       errorGenerating = true;
     } */
-  });
+      }
+    );
 
-  /* if (errorGenerating) {
+    /* if (errorGenerating) {
     return res.status(500).send("Error generating badges");
   } */
 
-  /* Se retorna true en caso de exito */
-  return true;
+    /* Se retorna true en caso de exito */
+    return true;
+  } catch (error) {
+    /* En caso de error se imprime en consola y se retorna false */
+    console.error(error);
+    await browser.close();
+    return false;
+  }
 };
 
 /* Se inicia el servidor en el puerto especificado */
