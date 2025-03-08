@@ -99,7 +99,7 @@ const generateBadges = async () => {
 
     /* Se escribe el archivo data.json con los datos obtenidos */
     await fs.writeFile("./src/data.json", JSON.stringify(staffData, null, 2));
-    /* let errorGenerating = false; */
+
     /** Contiene la ruta de el entorno virtual de python */
     const venvPythonPath = path.resolve(".venv", "bin", "python");
 
