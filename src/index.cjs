@@ -107,16 +107,19 @@ const generateBadges = async () => {
     exec(
       `${venvPythonPath} ${generateBagdeBinRoute}`,
       (err, stdout, stderr) => {
-        /* if (err) {
-      console.error(err);
-      errorGenerating = true;
-    } */
+        /* En caso de error se imprime en consola y se retorna false */
+        if (err) {
+          console.error(`Error: ${err.message}`);
+          return false;
+        }
+        if (stderr) {
+          console.error(`Stderr: ${stderr}`);
+          return false;
+        }
+        /* En caso de exito se imprime en consola */
+        console.log(`Stdout: ${stdout}`);
       }
     );
-
-    /* if (errorGenerating) {
-    return res.status(500).send("Error generating badges");
-  } */
 
     /* Se retorna true en caso de exito */
     return true;
@@ -135,9 +138,9 @@ app.listen(port, async () => {
     if (err) throw err;
   });
 
-  /** Ejecuta el servicio de generacion de badges 
-  * @type {boolean}
-  */
+  /** Ejecuta el servicio de generacion de badges
+   * @type {boolean}
+   */
   const execGenerate = await generateBadges();
 
   /* En caso de error al generar las badges se imprime en consola y el servidor deja de ejecutarse */
