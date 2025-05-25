@@ -1,8 +1,0 @@
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    command: npm run start
-    volumes:
-      - /app/public/badges

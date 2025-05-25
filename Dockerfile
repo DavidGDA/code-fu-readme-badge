@@ -1,15 +1,7 @@
-FROM node:22.14.0
+FROM node:22-slim
 
 WORKDIR /app
 
-COPY package.json /app/package.json
-COPY requirements.txt /app/requirements.txt
-COPY nodemon.json /app/nodemon.json
-
-ADD puppeteer.config.cjs /app/puppeteer.config.cjs
-ADD src /app/src
-
-RUN npm install
 RUN apt-get update && apt-get install -y \
     # Instalacion de python3
     python3 \
@@ -52,11 +44,23 @@ RUN apt-get update && apt-get install -y \
     lsb-release \
     wget \
     xdg-utils
+
+
 RUN python3 -m venv .venv
 RUN .venv/bin/pip install --upgrade pip
+
+COPY package.json /app/package.json
+COPY package-lock.json /app/package-lock.json
+ADD puppeteer.config.cjs /app/puppeteer.config.cjs
+
+RUN npm install
+
+COPY requirements.txt /app/requirements.txt
+
 RUN .venv/bin/pip install -r requirements.txt
+
+ADD src /app/src
 RUN chmod +x /app/src/libs/badges_generator.py
-RUN chmod +x src/index.cjs
 
 # En produccion, se debe usar el puerto de la variable de entorno PORT de heroku
 EXPOSE 3000
