@@ -1,6 +1,6 @@
 {
   "name": "code-fu-readme-badge",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "main": "src/index.cjs",
   "type": "commonjs",
   "scripts": {
