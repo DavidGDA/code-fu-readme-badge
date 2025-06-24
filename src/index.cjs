@@ -30,6 +30,7 @@ const generateBadges = async () => {
       "c-t",
       "hea-t",
       "sm-t",
+      "ds-t",
       "hta-t",
       "ta-t",
       "hca-t",
