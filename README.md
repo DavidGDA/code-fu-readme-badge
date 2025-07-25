@@ -9,6 +9,12 @@
 
 Code-Fu README Badge es un proyecto diseñado para proporcionar insignias personalizadas para los staffs de Code-FU.
 
+Si eres miembro del staff puedes acceder a tu badge personalizada a través del siguiente link:
+
+https://code-fu-readme-badge-1c0198600f3b.herokuapp.com/badges/staffCode.svg
+
+Reemplaza `staffCode` en la url con tu código de staff y listo, podrás ver tu badge, la cual puedes usar donde quieras
+
 ## Prerequisitos
 
 Para poder utilizar este proyecto en un entorno local, se necesitan tener instalados los siguientes programas:
